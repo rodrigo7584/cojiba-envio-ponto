@@ -6,6 +6,20 @@ const { PDFDocument } = require("pdf-lib");
 const { extractTextFromPDF } = require("../services/pdfService");
 const { sendEmail } = require("../services/emailService");
 
+const pastas = ["uploads", "arquivos"];
+
+for (const pasta of pastas) {
+  const dirPath = path.join(__dirname, "..", pasta); // Ajusta o caminho relativo
+
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+    console.log(`📁 Pasta criada: ${pasta}`);
+  }
+
+  // Define permissões totais (rwxrwxrwx)
+  fs.chmodSync(dirPath, 0o777);
+}
+
 async function processarDual(req, res) {
   try {
     const pdfColaboradores = req.files.pdfColaboradores[0];
