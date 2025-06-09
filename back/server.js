@@ -18,6 +18,10 @@ app.use(cors());
 // Rotas
 app.use("/api/uploadDual", uploadDualRoutes);
 
+app.get("/api/status", (req, res) => {
+    res.status(200).json({ status: "ok" });
+});
+
 // Inicia o servidor
 const PORT = process.env.PORT || 3001;
 
