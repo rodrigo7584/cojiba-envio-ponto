@@ -10,11 +10,7 @@ const app = express();
 // Configura CORS
 app.use(
 	cors({
-		origin: [
-			"http://localhost:3000",
-			"https://desenvolvimento-pontofront.x0k8xs.easypanel.host",
-			"http://desenvolvimento-pontofront.x0k8xs.easypanel.host",
-		],
+		origin: '*',
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		allowedHeaders: ["Content-Type"],
 	}),
