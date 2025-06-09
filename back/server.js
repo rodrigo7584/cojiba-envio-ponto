@@ -9,19 +9,7 @@ const uploadDualRoutes = require("./routes/uploadDualRoutes");
 const app = express();
 
 // Configura CORS
-app.use(
-	cors({
-		origin: [
-			"http://localhost:3000",
-			"https://ponto.rmwrsm.easypanel.host/",
-			"http://desenvolvimento-pontofront.x0k8xs.easypanel.host",
-			"https://ponto.rmwrsm.easypanel.host",
-			"http://ponto.rmwrsm.easypanel.host"
-		],
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		allowedHeaders: ["Content-Type"],
-	}),
-);
+app.use(cors());
 
 // Middleware para ler JSON
 // app.use(express.json({ limit: "10mb" }));
