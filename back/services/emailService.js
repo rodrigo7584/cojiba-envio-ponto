@@ -1,3 +1,4 @@
+// emailService.js
 const nodemailer = require("nodemailer");
 
 async function sendEmail(to, attachmentPath) {
