@@ -69,9 +69,9 @@ export default function Home() {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ lista: resultados }),
 			});
-
+      console.log(JSON.stringify({ lista: resultados }))
 			const data = await res.json();
-
+			
 			if (res.ok) {
 				setStatus("✅ E-mails enviados com sucesso!");
 				setResultados([]);

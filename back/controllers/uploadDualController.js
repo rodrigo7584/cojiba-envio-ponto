@@ -6,20 +6,6 @@ const { PDFDocument } = require("pdf-lib");
 const { extractTextFromPDF } = require("../services/pdfService");
 const { sendEmail } = require("../services/emailService");
 
-const pastas = ["uploads", "arquivos"];
-
-for (const pasta of pastas) {
-  const dirPath = path.join(__dirname, "..", pasta); // Ajusta o caminho relativo
-
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-    console.log(`📁 Pasta criada: ${pasta}`);
-  }
-
-  // Define permissões totais (rwxrwxrwx)
-  fs.chmodSync(dirPath, 0o777);
-}
-
 async function processarDual(req, res) {
   try {
     const pdfColaboradores = req.files.pdfColaboradores[0];
@@ -28,15 +14,33 @@ async function processarDual(req, res) {
     const dataBuffer = fs.readFileSync(pdfColaboradores.path);
     const pdfData = await pdfParse(dataBuffer);
     const text = pdfData.text;
-
+  
+    const linhas = text.split('\n').map(l => l.trim()).filter(Boolean);
     const colaboradores = [];
-    const regex = /Nome:\s+\d+-([A-Z\s]+)\s[\s\S]+?E-Mail\s+Comercial:\s*([\w.-]+@[\w.-]+\.\w+)/g;
 
-    let match;
-    while ((match = regex.exec(text)) !== null) {
-      const nome = match[1].trim();
-      const email = match[2].trim();
-      colaboradores.push({ nome, email });
+    for (let i = 0; i < linhas.length; i++) {
+      const linha = linhas[i];
+
+      if (linha.startsWith('Nome:')) {
+        const nomeMatch = linha.match(/Nome:\s+\d+-(.+)/);
+        const nome = nomeMatch ? nomeMatch[1].trim() : null;
+
+        let email = null;
+
+        // Busca por 'E-Mail  Comercial:' nas linhas seguintes
+        for (let j = i + 1; j < i + 6; j++) {
+          if (linhas[j] && linhas[j].startsWith('E-Mail  Comercial:')) {
+            const possivelEmail = linhas[j + 1] || '';
+            const emailMatch = possivelEmail.match(/[\w.-]+@[\w.-]+\.\w+/);
+            email = emailMatch ? emailMatch[0].trim() : null;
+            break;
+          }
+        }
+
+        if (nome) {
+          colaboradores.push({ nome, email });
+        }
+      }
     }
 
     fs.unlinkSync(pdfColaboradores.path);
@@ -105,7 +109,7 @@ async function processarDual(req, res) {
 async function enviarEmails(req, res) {
   try {
     const { lista } = req.body; // [{ nome, email, pagina, pdf }]
-
+    console.log(lista)
     for (const item of lista) {
       if(item.email){
         await sendEmail(item.email, item.pdf);
