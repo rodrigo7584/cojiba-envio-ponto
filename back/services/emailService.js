@@ -16,7 +16,7 @@ async function sendEmail(to, attachmentPath) {
 	});
 
 	await transporter.sendMail({
-		from: "rodrigo.gandhi@cojiba.com.br",
+		from: "rh@cojiba.com.br",
 		to,
 		subject: "Seu espelho de ponto",
 		text: "Segue em anexo seu espelho de ponto, não responda esse email.",
