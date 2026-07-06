@@ -107,6 +107,7 @@ async function processarDual(req, res) {
 }
 
 async function enviarEmails(req, res) {
+  console.log("Enviando emails...")
   try {
     const { lista } = req.body; // [{ nome, email, pagina, pdf }]
     console.log(lista)

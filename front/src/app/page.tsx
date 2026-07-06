@@ -38,7 +38,7 @@ export default function Home() {
 		setStatus("⏳ Processando...");
 
 		try {
-			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/uploadDual/processarDual`, {
+			const res = await fetch(`https://servicos-envio-ponto-back.eu8tjo.easypanel.host/api/uploadDual/processarDual`, {
 				method: "POST",
 				body: formData,
 			});
@@ -64,7 +64,7 @@ export default function Home() {
 		setStatus("⏳ Enviando e-mails...");
 
 		try {
-			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/uploadDual/enviarEmailsDual`, {
+			const res = await fetch(`https://servicos-envio-ponto-back.eu8tjo.easypanel.host/api/uploadDual/enviarEmailsDual`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ lista: resultados }),
@@ -91,7 +91,7 @@ export default function Home() {
 		setStatus("⏳ Cancelando operação...");
 
 		try {
-			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/uploadDual/cancelarOperacao`, {
+			const res = await fetch(`https://servicos-envio-ponto-back.eu8tjo.easypanel.host/api/uploadDual/cancelarOperacao`, {
 				method: "POST",
 			});
 
